@@ -1,7 +1,8 @@
 import { createHmac, createVerify, randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
-import { Completer } from "../modules/completer";
+import { Completer } from "../modules/utils/completer";
 import { JWT_SECRET_KEY } from "@/app/env";
+import { prisma } from "../modules/db";
 
 interface LoginCtx {
   loginKey: string;
@@ -36,7 +37,17 @@ async function* loginIterator() {
   hash.update(clp.pubKeyPem);
   const pkpHash = hash.digest("base64");
 
-  const token = jwt.sign({ pkpHash }, JWT_SECRET_KEY);
+  const user = await prisma.user.upsert({
+    where: {
+      pkpHash,
+    },
+    update: {},
+    create: {
+      pkpHash,
+    },
+  });
+
+  const token = jwt.sign(user, JWT_SECRET_KEY);
   yield token;
 
   doneCompleter.complete();

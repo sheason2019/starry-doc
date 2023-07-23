@@ -9,3 +9,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id         Int         @id @default(autoincrement())
+  pkpHash    String      @unique
+  name       String?
+  avatarUrl  String?
+  workSpaces WorkSpace[]
+  docs       Doc[]
+}
+
+model WorkSpace {
+  id Int @id @default(autoincrement())
+
+  workSpaceName String
+  owner         User   @relation(fields: [ownerId], references: [id])
+  ownerId       Int
+  Doc           Doc[]
+}
+
+model Doc {
+  id Int @id @default(autoincrement())
+
+  title   String
+  content String
+
+  owner   User @relation(fields: [ownerId], references: [id])
+  ownerId Int
+
+  workSpace   WorkSpace? @relation(fields: [workSpaceId], references: [id])
+  workSpaceId Int?
+}
