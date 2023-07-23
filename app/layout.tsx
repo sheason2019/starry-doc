@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { CssBaseline } from "@mui/material";
 
 import "./globals.css";
 import "@fontsource/roboto/300.css";
@@ -24,6 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <CssBaseline />
       <body className={inter.className}>
         <DocAppBar />
         {children}

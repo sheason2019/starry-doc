@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AppBar,
   Button,
@@ -16,10 +16,30 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
+import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import Link from "next/link";
+import { useUserStore } from "../../store/user";
+
+const routes: { href: string; icon: JSX.Element; label: string }[] = [
+  {
+    href: "/",
+    icon: <HomeIcon />,
+    label: "首页",
+  },
+  {
+    href: "/workspaces",
+    icon: <WorkspacesIcon />,
+    label: "工作区",
+  },
+];
 
 export default function DocAppBar() {
+  const userStore = useUserStore();
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    userStore.init();
+  }, []);
 
   return (
     <>
@@ -38,24 +58,26 @@ export default function DocAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Starry Doc
           </Typography>
-          <Button component={Link} href="/login" color="inherit">
-            Login
-          </Button>
+          {!!!userStore.pkpHash && (
+            <Button component={Link} href="/login" color="inherit">
+              Login
+            </Button>
+          )}
         </Toolbar>
         <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
           <List sx={{ width: 320 }}>
-            <ListItem disablePadding>
-              <ListItemButton
-                component={Link}
-                onClick={() => setDrawerOpen(false)}
-                href="/"
-              >
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary="个人首页" />
-              </ListItemButton>
-            </ListItem>
+            {routes.map((route) => (
+              <ListItem disablePadding key={route.href}>
+                <ListItemButton
+                  component={Link}
+                  onClick={() => setDrawerOpen(false)}
+                  href={route.href}
+                >
+                  <ListItemIcon>{route.icon}</ListItemIcon>
+                  <ListItemText primary={route.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
         </Drawer>
       </AppBar>
