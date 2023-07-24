@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material";
+import { createWorkSpace } from "./action";
 
 export function NewWorkSpaceButton() {
   const [showDialog, setShowDialog] = useState(false);
@@ -20,7 +21,7 @@ export function NewWorkSpaceButton() {
         New WorkSpace
       </Button>
       <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
-        <form>
+        <form action={createWorkSpace}>
           <DialogTitle>New WorkSpace</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -29,7 +30,7 @@ export function NewWorkSpaceButton() {
             <TextField
               autoFocus
               margin="dense"
-              id="name"
+              name="name"
               label="WorkSpace Name"
               type="text"
               fullWidth
@@ -38,7 +39,9 @@ export function NewWorkSpaceButton() {
           </DialogContent>
           <DialogActions>
             <Button>Cancel</Button>
-            <Button variant="contained">Submit</Button>
+            <Button variant="contained" type="submit">
+              Submit
+            </Button>
           </DialogActions>
         </form>
       </Dialog>

@@ -1,4 +1,4 @@
-import { Container, Button } from "@mui/material";
+import { Container } from "@mui/material";
 import { NewWorkSpaceButton } from "./new-workspace-button";
 
 export default function WorksapcesPage() {
