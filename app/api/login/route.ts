@@ -1,8 +1,8 @@
 import { createHmac, createVerify, randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
-import { Completer } from "../modules/utils/completer";
+import { Completer } from "../_modules/utils/completer";
 import { JWT_SECRET_KEY } from "@/app/env";
-import { prisma } from "../modules/db";
+import { prisma } from "../_modules/db";
 
 interface LoginCtx {
   loginKey: string;
@@ -70,7 +70,10 @@ export async function GET() {
           controller.enqueue(new Uint8Array(arr));
         }
       },
-    })
+    }),
+    {
+      headers: { 'Content-Type': 'text/event-stream' },
+    }
   );
 }
 

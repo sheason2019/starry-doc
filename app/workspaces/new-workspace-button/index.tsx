@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import {
   Button,
   Dialog,
@@ -10,9 +10,14 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material";
-import { createWorkSpace } from "./action";
+
+import { createWorkSpaceAction } from "./action";
+import { useUser } from "@/app/shared/hooks/use-user";
 
 export function NewWorkSpaceButton() {
+  const { jwt } = useUser();
+  const [isPending, startTransition] = useTransition();
+
   const [showDialog, setShowDialog] = useState(false);
 
   return (
@@ -21,7 +26,19 @@ export function NewWorkSpaceButton() {
         New WorkSpace
       </Button>
       <Dialog open={showDialog} onClose={() => setShowDialog(false)}>
-        <form action={createWorkSpace}>
+        <form
+          action={(data) => {
+            startTransition(async () => {
+              try {
+                const workspace = await createWorkSpaceAction(data);
+                setShowDialog(false);
+              } catch (e) {
+                console.log(e);
+              }
+            });
+          }}
+        >
+          <input hidden name="jwt" value={jwt ?? ""} readOnly />
           <DialogTitle>New WorkSpace</DialogTitle>
           <DialogContent>
             <DialogContentText>

@@ -18,7 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import HomeIcon from "@mui/icons-material/Home";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import Link from "next/link";
-import { useUserStore } from "../../store/user";
+import { useUser } from "../../hooks/use-user";
 
 const routes: { href: string; icon: JSX.Element; label: string }[] = [
   {
@@ -34,12 +34,8 @@ const routes: { href: string; icon: JSX.Element; label: string }[] = [
 ];
 
 export default function DocAppBar() {
-  const userStore = useUserStore();
+  const { user, error } = useUser();
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  useEffect(() => {
-    userStore.init();
-  }, []);
 
   return (
     <>
@@ -58,7 +54,7 @@ export default function DocAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Starry Doc
           </Typography>
-          {!!!userStore.pkpHash && (
+          {!!!user && (
             <Button component={Link} href="/login" color="inherit">
               Login
             </Button>

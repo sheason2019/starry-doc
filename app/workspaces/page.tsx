@@ -1,5 +1,6 @@
 import { Container } from "@mui/material";
 import { NewWorkSpaceButton } from "./new-workspace-button";
+import WorkSpaces from "./workspace-list";
 
 export default function WorksapcesPage() {
   return (
@@ -8,6 +9,7 @@ export default function WorksapcesPage() {
         <div className="text-2xl flex-1">WorkSpaces</div>
         <NewWorkSpaceButton />
       </div>
+      <WorkSpaces />
     </Container>
   );
 }

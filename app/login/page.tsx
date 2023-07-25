@@ -1,10 +1,11 @@
 "use client";
 
 import { Card, Button } from "@mui/material";
-import { useUserStore } from "../shared/store/user";
+import { useJwt } from "../shared/store/use-jwt";
 
 export default function Login() {
-  const userStore = useUserStore();
+  const { setJwt } = useJwt();
+
   const handleLogin = async () => {
     const resp = await fetch("/api/login");
     const reader = resp.body?.getReader();
@@ -28,7 +29,7 @@ export default function Login() {
     }
 
     sessionStorage.setItem("jwt", jwt);
-    userStore.setJwt(jwt);
+    setJwt(jwt);
   };
 
   return (

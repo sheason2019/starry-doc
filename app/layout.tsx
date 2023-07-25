@@ -8,6 +8,8 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import DocAppBar from "./shared/components/doc-app-bar";
+import { SWRConfig } from "swr";
+import { GlobalProvider } from "./shared/components/global-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +26,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <CssBaseline />
-      <body className={inter.className}>
-        <DocAppBar />
-        {children}
-      </body>
+
+      <GlobalProvider>
+        <body className={inter.className}>
+          <DocAppBar />
+          {children}
+        </body>
+      </GlobalProvider>
     </html>
   );
 }
