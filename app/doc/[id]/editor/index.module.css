@@ -1,0 +1,10 @@
+.editorContainer {
+  outline: none;
+}
+
+.editorContainer * {
+  margin: 0;
+}
+.editorParagraph {
+  margin-bottom: 0.15rem;
+}
